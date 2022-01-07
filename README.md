@@ -1,2 +1,0 @@
-# basicCs
-basic cs
