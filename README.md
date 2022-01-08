@@ -6,3 +6,4 @@
     + 리눅스 역사와 유닉스와 차이
     + 쉘?
         + 쉘의 이용사례
++ [마크다운 문법](https://github.com/ese111/MyStudyDirectoryDictionary/blob/main/markDown.md#%EB%B2%88%ED%98%B8)
