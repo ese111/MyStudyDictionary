@@ -4,7 +4,7 @@
         + [논리 게이트](https://github.com/ese111/Today-I-Learn/blob/main/digitalLogicCode/digitalLogic.md)
         + [전가산기, 반가산기](https://github.com/ese111/Today-I-Learn/blob/main/digitalLogicCode/adder.md)
     + 리눅스
-        + 리눅스란
+        + [리눅스](./linux/linux.md)
         + shell script
             + 명령어
             + 문법
