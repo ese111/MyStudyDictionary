@@ -148,5 +148,8 @@ fun main(args: Array<String>) {
 
 ## linked list 테스트
 ![링크드 리스트 결과](./img/linked.png)
+
+
+
 참고  
 https://opentutorials.org/module/1335/8821

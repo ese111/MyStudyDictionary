@@ -9,5 +9,8 @@
             + 명령어
             + 문법
     + ssh
+    - 자료 구조
+        - [자료 구조를 알아야하는 이유](./dataStructure/whyDataStruture.md)
+        - [Linked List](./dataStructure/linkedList.md)
 
 + [마크다운 문법](https://github.com/ese111/MyStudyDirectoryDictionary/blob/main/markDown.md#%EB%B2%88%ED%98%B8)
