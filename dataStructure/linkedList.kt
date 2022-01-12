@@ -1,7 +1,7 @@
 class linked{
 	val header:Node? = Node()
 	
-	inner class Node{
+	class Node{
 	var pre: Node? = null
 	var next: Node? = null
 	var data: Int? = null
