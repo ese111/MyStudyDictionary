@@ -1,4 +1,3 @@
-package com.example.mykotlin
 class Queue<T>{
     class Node<T>(val data: T){
         var next: Node<T>? = null
