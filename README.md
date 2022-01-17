@@ -15,13 +15,13 @@
         - [Stack](./dataStructure/stack.md)
         - [Queue](./dataStructure/queue.md)
     - [객체지향](./oop/oop.md)
-        - [객체지향이란](./oop/oop.md/## 객체지향이란)
-        - [역사](./oop/oop.md/## 역사)
-        - [캡슐화](./oop/oop.md/- ### 캡슐화)
-            - [정보은닉](./oop/oop.md/- #### 정보은닉)
-        - [다형성](./oop/oop.md/## 역사)
-        - [상속](./oop/oop.md/## 역사)
-        - [SOLID 원칙]
+        - 객체지향이란
+        - 역사
+        - 캡슐화
+            - 정보은닉
+        - 다형성
+        - 상속
+        - SOLID 원칙
     - 프로세스
     
 + [마크다운 문법](https://github.com/ese111/MyStudyDirectoryDictionary/blob/main/markDown.md#%EB%B2%88%ED%98%B8)
