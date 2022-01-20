@@ -23,5 +23,6 @@
         - 상속
         - SOLID 원칙
     - 프로세스
+        - [메모리 관리](./processMemory/memoryManagement.md)
     
 + [마크다운 문법](https://github.com/ese111/MyStudyDirectoryDictionary/blob/main/markDown.md#%EB%B2%88%ED%98%B8)
