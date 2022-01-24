@@ -24,6 +24,7 @@
         - SOLID 원칙
     - 프로세스
         - [메모리 관리](./processMemory/memoryManagement.md)
+        - [프로세스 스케쥴러](./os/Process.md)
     - [함수형 프로그래밍](./Functional/Functional.md)
         - [람다](./Functional/Lamda.md)
     
