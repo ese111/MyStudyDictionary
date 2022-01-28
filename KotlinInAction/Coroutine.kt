@@ -60,6 +60,5 @@ fun main(args: Array<String>) {
    log("main terminated")
     runBlockingExample()
     sumAll()
-
 }
 

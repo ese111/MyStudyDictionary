@@ -1,4 +1,6 @@
 # Process, Thread
+## 프로그램의 실행
+프로그램은 실행 파일 형태로 하드디스크에 저장이 되어 있다가 실행을 시키면 가상메모리에 프로그램의 주소를 할당 받고(코드, 데이터, 스택) 물리적 메모리에 필요한 부분만 올려서 실행
 ## 프로세스
 - cpu가 처리하는 작업
 - 실행중인 프로그램
@@ -9,8 +11,8 @@
 - Ready: 할당된 프로그램이 초기화를 통해 준비
 - Running: CPU가 프로세스 실행
 - Waitng: 프로세스가 끝나지 않은 시점에서 I/O로 인해 CPU를 안쓰고 다른 작업
-- Terminated: 종료
-
+- Terminated: 종료 중
+- Stopped: 외부요인으로 강제 종료 중
 ### PCB(Process Control Block)
 - 프로세스의 대한 정보가 있는곳
 - TCB(Task Control Block)이라고도 함
@@ -36,4 +38,16 @@ CPU는 프로세스를 바꿔가며 수행하기 떄문에 수행했던 프로�
         - 프로세스가 CPU를 점유하는 순서를 정해주는데 이는 매우 빠른 시간안에 이루어져야한다. 현대 컴퓨터가 여러 프로그램을 동시에 사용하는 것과 같은 효과를 주는 이유가 이 스케줄링 속도가 매우 빠르게 이루어지기 때문
     - Device Queue - Device Scheduler
 
-
+## 스케쥴러
+- Long-term Scheduler(job Scheduler)
+    - 시분할에는 없음
+    - 시작 프로세스 중 어느것을 ready Queue에 올릴지 결정
+    - degree of Multiprogramming을 제어
+    - 프로세스에 메모리를 주는 문제
+- Medium-term Scheduler
+    - 여유 공간 마련을 위해 프로세스를 통째로 메모리에서 디스크로 내보냄
+    - 프로세스에서 메모리를 뺏는 문제
+- Short-term Scheduler
+    - 어떤 프로세스를 running 시킬지 결정
+    - 프로세스에 CPU를 주는 문제
+    - 빨라야한다
