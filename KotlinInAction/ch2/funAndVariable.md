@@ -333,4 +333,28 @@ fun evalWithLogging(e: Expr): Int =
         println(i)
     }
     ```
+### 맵 이터레이션
+- for문을 통해 가능
+```kotlin
+val tree = TreeMap<Char, String>()
+
+fun main() {
+    for (c in 'A'..'F'){
+        val binary = Integer.toBinaryString(c.toInt())
+        tree[c] = binary
+    }
+    for ((letter, binary) in tree){
+        println("$letter = $binary")
+    }
+}
+```
+- (letter, binary)로 키와 값 쌍 저장가능
+- get, put말고 tree[c] = binary로 저장가능
+- 다른 컬렉션에도 사용가능
+```kotlin
+val list = arrayListOf("10", "11", "1001")
+    for((index, element) in list.withIndex()){
+        println("$index: $element")
+    }
+```
 
