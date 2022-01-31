@@ -198,3 +198,139 @@ fun main(args: Array<String>) {
     println(Color.BLUE.rgb())
 }
 ```
+### when
+- when도 식
+```kotlin
+fun getMnemonic(color: Color) = when(color){
+    Color.RED -> "Richard"
+    Color.ORANGE -> "Of"
+    Color.YELLOW -> "York"
+    Color.GREEN -> "Gave"
+    Color.BLUE -> "Battle"
+    Color.INDIGO -> "In"
+    Color.VIOLET -> "Vain"
+}
+fun main(args: Array<String>) {
+    println(getMnemonic(Color.BLUE))
+}
+```
+- break를 넣지 않아도 됨
+- 여러 값을 매치 패턴으로 사용 할땐 , 사용
+```kotlin
+fun getWarmth(color: Color) = when(color){
+    Color.RED, Color.ORANGE, Color.YELLOW -> "warm"
+    Color.GREEN -> "neutral"
+    Color.BLUE, Color.INDIGO, Color.VIOLET -> "cold"
+}
+fun main(args: Array<String>) {
+    println(getWarmth(Color.BLUE))
+}
+```
+- import를 통해서 Color없이 사용
+```kotlin
+package kotlinInAction.ch02.GetWarmth
+
+import kotlinInAction.ch02.colors.Color.Color
+import kotlinInAction.ch02.colors.Color.Color.*
+
+fun getWarmth(color: Color) = when(color){
+    RED, ORANGE, YELLOW -> "warm"
+    GREEN -> "neutral"
+    BLUE, INDIGO, VIOLET -> "cold"
+}
+
+fun main() {
+    getWarmth(RED)
+}
+```
+- 분기 조건에 다른 객체도 사용 가능
+```kotlin
+fun mix(c1: Color, c2: Color) =
+    when(setOf(c1, c2)) {
+       setOf(RED, YELLOW) -> ORANGE
+       setOf(YELLOW, BLUE) -> GREEN
+       setOf(BLUE, VIOLET) -> INDIGO
+       else -> throw Exception("Dirty color")
+    }
+fun main() {
+    println(mix(BLUE, YELLOW))
+}
+```
+## 스카트 캐스트
+- is는 타입을 검사하는 함수
+- is를 쓰면 자동으로 타입을 캐스팅해줌
+    - ex) e is Num 후에 e를 자동으로 Num으로 캐스팅해줌
+- 커스텀 접근자 x
+- 프로퍼티가 val만 가능
+```kotlin
+interface Expr
+class Num(val value: Int) : Expr
+class Sum(val right: Expr, val left: Expr) : Expr
+fun eval(e: Expr): Int{
+    if(e is Num){
+        val n= e as Num
+        return n.value
+    }
+    if(e is Sum){
+        return eval(e.right)+ eval(e.left)
+    }
+    throw IllegalArgumentException("Unknown")
+}
+fun main() {
+    println(eval(Sum(Sum(Num(1),Num(2)), Num(4))))
+}
+```
+### when으로 리팩토링
+- if를 식으로
+```kotlin
+fun eval(e: Expr): Int = if (e is Num) { e.value } else if (e is Sum) { eval2(e.left) + eval2(e.right) } else { throw java.lang.IllegalArgumentException("Unknown expression") }
+```
+- when으로
+```kotlin
+fun eval(e: Expr): Int = when(e) { 
+    is Num -> 
+        e.value 
+    is Sum -> 
+        eval3(e.left) + eval3(e.right) 
+    else -> 
+        throw IllegalArgumentException("Unknown expression") 
+    }
+```
+- 복잡하면 블록도 사용 가능
+```kotlin
+fun evalWithLogging(e: Expr): Int =
+    when(e){
+        is Num -> {
+            println("num: ${e.value}")
+            e.value
+        }
+        is Sum -> {
+            val left = evalWithLogging(e.left)
+            val right = evalWithLogging(e.right)
+            println("sum: $left + $right")
+            eval(e.right) + eval(e.left)
+        }
+        else ->
+            throw IllegalArgumentException("Unknown expression")
+    }
+
+```
+## 이터레이션
+### 반복문
+- while, do while
+    - java와 같음
+- for
+    - 1..100으로 범위 설정가능
+        - 끝 값까지
+        - 직전까지 하고 싶으면 until 사용
+    - downTo: 하행
+    - step: 건너뛰기
+    ```kotlin
+    for (i in 1..100){
+        println(i)
+    }
+    for (i in 100 downTo 1 step 2){
+        println(i)
+    }
+    ```
+
