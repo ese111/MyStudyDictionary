@@ -357,4 +357,23 @@ val list = arrayListOf("10", "11", "1001")
         println("$index: $element")
     }
 ```
+### in으로 검사
+```kotlin
+fun isLetter(c: Char) = c in 'a'..'z' || 'c' in 'A'..'Z'
+fun isNotDigit(c: Char) = c !in '0'..'9'
+fun recognize(c:Char) = when(c){
+    in '0'..'9' -> "It's a digit!"
+    in 'a'..'z', in 'A'..'z' -> "It's a letter!"
+    else -> "i don't know"
+}
+fun main() {
+    println(isLetter('q'))
+    println(isNotDigit('3'))
+    println(recognize('4'))
+    println("Kotlin" in "Java".."Scala")
+    println("Kotlin" in setOf("Java","Scala"))
+}
+```
+- in으로 문자부터 컬렉션 원소도 검사가능
+- !in은 반대
 
