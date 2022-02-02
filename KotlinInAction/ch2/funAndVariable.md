@@ -376,4 +376,21 @@ fun main() {
 ```
 - in으로 문자부터 컬렉션 원소도 검사가능
 - !in은 반대
-
+### 예외처리
+- throw는 식이다.
+- try, catch에서 return이 없어도됨
+- 자바7의 try-with-resource는 문법은 제공하지 않지만 라이브러리 함수로 구현 가능
+```kotlin
+fun readNumber(reader: BufferedReader){
+    val number = try {
+        Integer.parseInt(readLine())
+    }catch (e: NumberFormatException){
+        null
+    }
+    println(number)
+}
+fun main() {
+    val reader = BufferedReader(StringReader("not"))
+    readNumber(reader)
+}
+```
