@@ -209,4 +209,76 @@ for((index, element) in collection.withIndex()) {
     println("$index: $element")
 }
 ```
-
+- 일반 함수를 간결하게 표현하는 것 뿐
+##  문자열 나누기
+- 자바의 spilt은 정규식이기 때문에 .을 정규식으로 인식
+- 코틀린은 확장 함수를 통해서 정규식을 처리
+- 여러 문자 구분도 처리가능
+```kotlin
+println("12.345-6.A".split("\\.|-".toRegex()))
+```
+```kotlin
+println("12.345-6.A".split(".","-"))
+```
+## 정규식과 3중 따옴표
+- 확장 함수로 경로 파싱
+```kotlin
+fun parsePath(path: String) {
+    val directory = path.substringBeforeLast("/")
+    val fullName = path.substringAfterLast("/")
+    val fileName = fullName.substringBeforeLast(".")
+    val extension = fullName.substringAfterLast(".")
+    println("Dir: $directory, name: $fileName, ext: $extension")
+}
+```
+- 정규식으로 파싱
+    - 삼중 따옴표 안에는 \\.이 아닌 \.로 표현이 가능
+```kotlin
+fun parsePath1(path: String) {
+   val regex = """(.+)/(.+)\.(.+)""".toRegex()
+    val matchResult = regex.matchEntire(path)
+    if(matchResult != null){
+        val (diretory, filename, extension) = matchResult.destructured
+        println("Dir: $diretory, name: $filename, ext: $extension")
+    }
+}
+```
+- 삼중 따옴표 안에 $를 넣고 싶다면 ${$}로 넣어야됨
+- 테스트때 요긴하게 쓸 수 있는 프로그램 텍스트도 문자열로 변경 가능
+```kotlin
+val logo = """|  //
+            .| //
+            .|/  \"""
+println(logo.trimMargin("."))
+```
+## 로컬 함수를 통해 중복 제거
+```kotlin
+class User(val id: Int, val name: String, val address: String)
+fun saveUser(user: User) {
+    if(user.name.isEmpty()) {
+        throw IllegalArgumentException(
+            "Can't save user ${user.id}: empty Name"
+        )
+    }
+    if(user.name.isEmpty()) {
+        throw IllegalArgumentException(
+            "Can't save user ${user.id}: empty Address"
+        )
+    }
+}
+```
+- 중복 제거
+```kotlin
+fun saveUser(user: User) {
+    fun validate(value: String,
+                fileName: String) {
+        if(user.name.isEmpty()) {
+            throw IllegalArgumentException(
+                "Can't save user ${user.id}: empty ${fieldName}"
+            )
+        }
+    }
+    validate(user.name, "Name")
+    validate(user.address, "Address")
+}
+```
