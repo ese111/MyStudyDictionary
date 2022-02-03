@@ -177,10 +177,36 @@ var StringBuilder.lastChar: Char
         this.setCharAt(length - 1, value)
     }
 ```
-## 스프레드 연산자
+## 가변 인자 함수
+- 파라미터 앞에 vararg 변경자를 붙여 가변인자 전달
+### 스프레드 연산자
+- 배열 앞에 *를 붙여 사용가능
+- 가변길이 배열은 명시적으로 풀어 인자로 전달할때 자동으로 풀어서 전달해줌
 ```kotlin
 fun main(args: Array<String>){
     val list = listOf("args: ", *args)
     println(list)
 }
 ```
+## 값의 쌍 다루기
+- 맵을 선언시 쓴 to 함수: 중위 호출
+- 1.to("one") 과 1 to "one"은 동일
+### 중위 호출
+- infix 변경자를 함수 앞에 추가
+- Pair: 코틀린 라이브러리 클랙스로 순서쌍 표현
+- 실제 to는 제네릭 함수지만 설명을 위해 생략
+```kotlin
+infix fun Ant.to(other: Any) = Pair(this, other)
+```
+### 구조분해선언
+- Pair로 두 변수를 즉시 초기화 가능
+```kotlin
+val (number, name) = 1 to "one"
+```
+- withIndex를 이용해서 구조분해 가능
+```kotlin
+for((index, element) in collection.withIndex()) {
+    println("$index: $element")
+}
+```
+
