@@ -92,8 +92,56 @@ const val cnt = 3
 ```
 ## 메소드를 다른 클래스에 추가
 - 확장함수는 기존 자바 API를 이용해서 코툴린의 기능을 사용가능하게 해준다
+- 함수 이름 앞에 확장할 클래스 이름
+    - 클래스 이름: 수신 객체 타입(String)
+    - 확장 함수가 호출되는 대상이 되는 값: 수신 객체(this)
+- this 생략 가능
+- 확장 함수는 캡슐화를 깨지 않는다
 ```kotlin
 package string
 
 fun String.lastChar(): Char = this.get(this.length - 1)
+```
+## import와 확장함수
+- import해야 함수 사용가능
+```kotlin
+//import string.*
+import string.lastChar as last
+val c = "Kotlin".last()
+```
+- as를 이용해서 다른이름으로 부르기도 가능
+- 확장함수는 짧은 이름을 써야함
+- 충돌을 막기 위해 as사용
+## 자바에서 호출
+- 파일이름을 사용
+- 파일이름이 StringUtil.kt일때
+```java
+char c = StringUtillKt.lastChar("Java")
+```
+## 확장 함수로 유틸리티 함수 정의
+- joinToString() 최종
+```kotlin
+fun<T> Collection<T>.joinToString(
+    separator: String = ", ",
+    prefix: String = "",
+    postfix: String = ""
+): String {
+    val result = StringBuilder(prefix)
+    for ((index, element) in this.withIndex()){
+        if(index>0) result.append(separator)
+        result.append(element)
+    }
+    result.append(postfix)
+    return result.toString()
+}
+```
+- Collection에 대한 확장 함수로 선언
+- 확장 함수는 단지 정적 메소드 호출에 대한 문법적인 편의일 뿐
+- 클래스가 아닌 구체적인 타입을 수신 객체 타입으로 지정가능
+```kotlin
+fun<T> Collection<String>.join(
+    separator: String = ", ",
+    prefix: String = "",
+    postfix: String = ""
+) = joinToString(separator, prefix, postfix)
 ```
