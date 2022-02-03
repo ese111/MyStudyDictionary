@@ -145,3 +145,42 @@ fun<T> Collection<String>.join(
     postfix: String = ""
 ) = joinToString(separator, prefix, postfix)
 ```
+## 확장 함수는 오버라이드 불가
+- 확장 함수는 클래스 밖에 선언되어서 오버라이드가 안된다
+- 첫번쨰 인자가 수신 객체인 정적 메소드이기 때문
+```kotlin
+open class View {
+    open fun click() = println("View clicked")
+}
+
+class Button: View() {
+    override fun click() = println("Button clicked")
+}
+fun View.showOff() = println("i'm a view")
+fun Button.showOff() = println("I'm button")
+fun main() {
+    val view: View = Button()
+    view.click()
+    view.showOff()
+}
+```
+## 확장 프로퍼티
+- 백킹 필드가 없어서 게터를 써줘야함
+- 저장할 곳이 없어서 초기화 불가
+- 자바에서 쓰려면 게터나 세터를 명시적으로 써줘야함
+```kotlin
+val String.lastChar: Char
+    get() = get(length - 1)
+var StringBuilder.lastChar: Char
+    get() = get(this.length - 1)
+    set(value: Char){
+        this.setCharAt(length - 1, value)
+    }
+```
+## 스프레드 연산자
+```kotlin
+fun main(args: Array<String>){
+    val list = listOf("args: ", *args)
+    println(list)
+}
+```
