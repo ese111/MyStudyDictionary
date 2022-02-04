@@ -282,3 +282,18 @@ fun saveUser(user: User) {
     validate(user.address, "Address")
 }
 ```
+- 확장 함수로 변경
+```kotlin
+fun User.validateBeforeSave() {
+    fun validate(value: String,
+                 fileName: String) {
+        if(name.isEmpty()) {
+            throw IllegalArgumentException(
+                "Can't save user ${id}: empty Name"
+            )
+        }
+    }
+    validate(name, "Name")
+    validate(address, "Address")
+}
+```
