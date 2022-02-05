@@ -182,3 +182,88 @@ class User (_nickname: String) {
 ```
 - _는 구분을 위한 사용(자바처럼 this.nickname = nickname도 가능)
 - 주 생성자 앞에 애노테이션이나 가시성 변경자가 없다면 constructor 생략 가능
+- 생성자도 디폴트 값 사용 가능
+```kotlin
+class User (val nickname: String, val isSubscried: Boolean = true)
+```
+- 호출시에는 new없이 호출
+```kotlin
+val park = User("peter")
+```
+- 기반 클래스를 초기화하려면 기반 클래스 이름 뒤에 괄호를 치고 생성자 인자를 넘김
+```kotlin
+open class User (val nickname: String) 
+class TwitterUser(nickname: String): User(nickname) {
+    
+} 
+```
+- 생성자가 없으면 자동으로 인자가 없는 디폴트 생성자를 만듬 그래서 호출시 생성자를 호출해야함
+```kotlin
+open class Switch
+class RadioButton: Switch()
+```
+- 인터페이스는 생성자가 없어서 ()가 없음
+- 클래스 외부에서 인스턴스화하지 못하게 하려면 private을 붙이면됨
+    - 그 클래스 안에는 주 생성자밖에 없고 그 주 생성자는 비공개이므로 외부에서 인스턴스 불가
+```kotlin
+class Secretive private constructor() {}
+```
+## 부 생성자
+- 부 생성자 만드는 법
+```kotlin
+open class View {
+    constructor(ctx: Context) {
+        println("context!")
+    }
+
+    constructor(ctx: Context, attr: AttributeSet) {
+        println("attributeSet!!")
+    }
+}
+```
+- 확장 가능
+```kotlin
+class MyButton : View {
+    constructor(ctx: Context)
+            : super(ctx) {
+
+    }
+
+    constructor(ctx: Context, attr: AttributeSet)
+            : super(ctx, attr) {
+
+    }
+}
+```
+- this로 위임 가능
+    - 주 생성자가 없다면 자신의 다른 생성자를 초기화해서 불러줘야함
+```kotlin
+class MyButton : View {
+    constructor(ctx: Context) : this(ctx, null){
+        // ...
+    }
+    constructor(ctx: Context, attr: AttributeSet?) : super(ctx, attr){
+        // ...
+    }
+}
+```
+## 프로퍼티 구현
+- 서로 다른 구현을 하는 3개의 클래스
+```kotlin
+interface User{
+    val name: String
+}
+class PrivateUser(override val name: String) : User
+class SubscribingUser(val email: String): User {
+    override val name: String
+        get() = email.substringBefore('@')
+}
+class FaceBookUser(val accountId: Int):User{
+    override val name = getFaceBookId(accountId)
+}
+```
+- PrivateUser: 주 생성자에 프로퍼티 선언
+- SubscribingUser: 커스텀 게터 사용
+- FaceBookUser: getFaceBookId()라는 함수가 있다는 가정하에 작성
+- SubscribingUser와 FaceBookUser는 다르다
+    - 인터페이스는 백킹 필드가 없어서 상태를 저장 할 수 없어서 커스텀 게터를 사용한 SubscribingUser는 매번 정보를 불러오는 구조이고 상태를 저장해서 불러오는 FaceBookUser는 한 번만 함수를 써서 초기화한다
