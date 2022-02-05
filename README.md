@@ -30,3 +30,8 @@
                 + 명령어
                 + 문법
 + [마크다운 문법](https://github.com/ese111/MyStudyDirectoryDictionary/blob/main/markDown.md#%EB%B2%88%ED%98%B8)
+
+- Kotlin In Action
+    - [함수와 변수](./KotlinInAction/ch2/funAndVariable.md)
+    - [함수 호출](./KotlinInAction/ch3/FunctionalCall.md)
+    - [클래스, 객체, 인터페이스](./KotlinInAction/ch4/Class.md)

@@ -267,3 +267,62 @@ class FaceBookUser(val accountId: Int):User{
 - FaceBookUser: getFaceBookId()라는 함수가 있다는 가정하에 작성
 - SubscribingUser와 FaceBookUser는 다르다
     - 인터페이스는 백킹 필드가 없어서 상태를 저장 할 수 없어서 커스텀 게터를 사용한 SubscribingUser는 매번 정보를 불러오는 구조이고 상태를 저장해서 불러오는 FaceBookUser는 한 번만 함수를 써서 초기화한다
+
+## 게터와 세터에서 백킹필드 접근
+```kotlin
+class User(val name: String) {
+    var address: String = "unspecified"
+    set(value: String) {
+        println("""
+            Address was changed for $name:
+            "$field" -> "$value".
+        """.trimIndent())
+        field = value
+    }
+}
+```
+- val는 게터만 var 세터, 게터 필드 필요
+- field라는 식별자를 이용해서 값을 저장하고 불러올 수 있음
+- field를 쓰면 자동을 백킹 필드를 만들어줌
+- field가 없는 커스텀 접근자는 백킹 필드도 없음
+
+## 접근자의 가시성 변경
+- 접근자도 가시성을 변경할 수 있다
+```kotlin
+class LengthCount {
+    var counter: Int = 0
+    private set
+    fun addWord(word: String) {
+        counter += word.length
+    }
+}
+```
+- 게터는 자동으로 생성하고 변경은 내부에서만 하게 하고 싶을때
+- counter를 외부에서 변경할 수 없게 세터에 private을 설정
+## 모든 클래스가 정의해야 하는 메소드
+- toString, equals, hashCode 등을 오버라이드해서 사용 가능
+- Client 클래스에 구현해보기
+```kotlin
+class Client(val name: String, val postalCode: Int) {
+```
+- toString
+```kotlin
+class Client(val name: String, val postalCode: Int) {
+    override fun toString() = "Client(name=$name, postalCode=$postalCode)"
+}
+```
+- equals
+    - 만약 같은 값을 가진 객체면 동일한 객체라고 인식해야할 경우
+- 코틀린은 ==를 사용하면 내부에서 equals를 불러서 실행함
+```kotlin
+class Client(val name: String, val postalCode: Int) {
+    override fun equals(other: Any?): Boolean {
+        if(other == null || other !is Client)
+            return false
+        return name == other.name && 
+                postalCode == other.postalCode
+    }
+    override fun toString() = "Client(name=$name, postalCode=$postalCode)"
+}
+```
+- 두 객체의 값이 같으면 true
