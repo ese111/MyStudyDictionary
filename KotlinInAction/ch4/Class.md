@@ -305,15 +305,17 @@ class LengthCount {
 ```kotlin
 class Client(val name: String, val postalCode: Int) {
 ```
-- toString
+- ### toString
 ```kotlin
 class Client(val name: String, val postalCode: Int) {
     override fun toString() = "Client(name=$name, postalCode=$postalCode)"
 }
 ```
-- equals
+- ### equals
     - 만약 같은 값을 가진 객체면 동일한 객체라고 인식해야할 경우
 - 코틀린은 ==를 사용하면 내부에서 equals를 불러서 실행함
+- 두 객체의 값이 같으면 true
+- 오버라이드된 함수인자의 Any?를 Client로 변경이 불가해서 !is로 객체 타입을 검사
 ```kotlin
 class Client(val name: String, val postalCode: Int) {
     override fun equals(other: Any?): Boolean {
@@ -325,4 +327,115 @@ class Client(val name: String, val postalCode: Int) {
     override fun toString() = "Client(name=$name, postalCode=$postalCode)"
 }
 ```
-- 두 객체의 값이 같으면 true
+
+- ### hashCode()
+- hashSet을 사용하면 HashSet은 hashCode를 이용해서 객체가 존재하는지를 체크함 하지만 위 equals는 hashCode가 없어서 set을 쓰면 중복 값이 저장이 된다 고로 hashCode를 만들어야함
+```kotlin
+override fun hashCode() = name.hashCode() * 31 + postalCode
+```
+## 데이터 클래스
+- 위의 코드를 코틀린은 작성하지 않아도 자동으로 해줌
+- data class는 생성자밖에 프로퍼티들은 고려하지 않음
+```kotlin
+data class Client(val name: String, val postalCode: Int) 
+```
+- data class : copy()
+- copy()는 데이터 클래스를 불변상태로 사용 활용하는데 도움을 줌
+- data class의 프로퍼티가 val일 필요는 없지만 불변상태를 권장
+- 불변상태 장점
+    - HashMap 등의 컨테이너에 담아야한다면 필수적으로 불변 상태여야함
+        - 키로 쓰인 프로퍼티가 변경되면 컨테이너 상태가 잘못될 수 있음
+    - 다중 스레드를 사용할떄는 더 중요
+        - 다른 스레드가 사용중인 데이터를 변경할 수 없음
+        - 동기화 안해도됨
+- 객체를 복사하면서 값을 바꾸거나 복사본을 제거해도 원본에는 손상이 없음
+- 구현
+```kotlin
+class Client(val name: String, val postalCode: Int) {
+    fun copy(name: String = this.name,
+         postalCode: Int = this.postalCode) = Client(name, postalCode)
+}
+```
+- 사용법
+```
+val lee = Client("lee", 4122)
+println(lee.copy(postalCode = 4000))
+```
+## 위임
+- 코틀린은 과도한 상속에 대한 문제점과 상위 클래스가 변경 될때 일어나는 하위 클래스의 문제를 인식하고 기본을 final로 하고 상속을 막음
+- 상속을 허용하지 않은 클래스에 새로운 동작을 추가해야 할 때 일반적인 방법이 데코레이터 패턴
+    - 데코레이터 패턴이란
+        - 상속을 허용하지 않는 클래스 대신 사용할 수 있는 새로운 클래스를 만등되 기존 클래스와 같은 인터페이스를 데코레이터가 제공하게 만들고, 기존 클래스를 데코레이터 내부에 필드로 유지하는 것
+    - 단점
+        - 준비가 많이 필요
+        - 동작이 필요없는 데코레이터
+        ```kotlin
+        class DelegatingCollection<T>: Collection<T> {
+            private val innerList = arrayListOf<T>()
+            override val size: Int get() = innerList.size
+            override fun isEmpty(): Boolean = innerList.isEmpty()
+            override fun contains(element: T): Boolean = innerList.contains(element)
+            override fun iterator(): Iterator<T> = innerList.iterator()
+            override fun containsAll(elements: Collection<T>): Boolean = innerList.containsAll(elements)    
+        }
+        ``` 
+        - 위임으로 변경
+        ```kotlin
+        class DelegatingCollection<T>(innerList:Collection<T> = ArrayList<T>()): Collection<T> by innerList
+        ```
+- 위임으로 원소 추가 횟수를 기록하는 컬렉션 만들기
+```kotlin
+class CountingSet<T>(val innerSet: MutableCollection<T> = HashSet<T>()): MutableCollection<T> by innerSet{
+    var objectsAdded = 0
+    override fun add(element: T): Boolean {
+        objectsAdded++
+        return innerSet.add(element)
+    }
+
+    override fun addAll(elements: Collection<T>): Boolean {
+        objectsAdded++
+        return innerSet.addAll(elements)
+        }
+    }
+```
+- CountingSet 은 MutableCollection의 구현 방식에 의존관계가 없다
+## 객체 선언: 싱글턴 패턴
+- kotlin은 object를 사용해서 편하게 싱글턴을 구현가능
+- 객체 선언에서 생성자는 사용 불가(실글턴 객체는 선언문이 있는 곳에서 바로 만들어짐)
+```kotlin
+object Payroll {
+    val allEmployees = arrayListOf<Person>()
+    fun calculateSalary() {
+        for (person in allEmployees){
+            //...
+        }
+    }
+}
+```
+- 객체 선언도 클래스나 인터페이스를 상속가능
+    - comparator 은 데이터를 저장할 필요가 없고 클래스마다 하나면 충분해서 객체 선언에 적당
+```kotlin
+object CaseInsensitiveFileComparator : Comparator<File> {
+    override fun compare(p0: File, p1: File): Int {
+        return p0.path.compareTo(p1.path, ignoreCase = true)
+    }
+}
+```
+- 대형 프로젝트에서는 객체 생성을 제어할 수 없고 파라미터도 없는 싱글턴과 객체 선언이 항상 좋지는 않음
+- 중첩 객체로 Comparator 구현
+```kotlin
+data class Person(val name: String) {
+    object  NameComparator : Comparator<Person> {
+        override fun compare(p0: Person, p1: Person) =
+            p0.name.compareTo(p1.name)
+    }
+}
+```
+- 객체 자바에서 쓰기
+    - 자바에서 코틀린 객체 선언은 유일한 인스턴스에 대한 정적 필드가 있는 자바 클래스로 컴파일됨
+    - 인스턴스 필드의 이름은 항상 INSTANCE 
+```java
+CaseInsensitiveFileComparator.INSTANCE.compare(file1, file2);
+```
+
+
