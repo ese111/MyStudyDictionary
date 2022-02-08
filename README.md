@@ -30,6 +30,7 @@
                 + 명령어
                 + 문법
 + [마크다운 문법](https://github.com/ese111/MyStudyDirectoryDictionary/blob/main/markDown.md#%EB%B2%88%ED%98%B8)
+- 가상화
 
 - Kotlin In Action
     - [함수와 변수](./KotlinInAction/ch2/funAndVariable.md)
