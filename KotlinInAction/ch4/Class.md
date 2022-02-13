@@ -437,5 +437,63 @@ data class Person(val name: String) {
 ```java
 CaseInsensitiveFileComparator.INSTANCE.compare(file1, file2);
 ```
+- 싱글턴과 의존관계 주입
+    - 싱글턴 패턴과 마찬가지고 객체 선언은 대규모에는 맞지 않다
+    - 객체 생성을 제어할 수 없기 때문
+    - 생성자 파라미터를 지정할 수 없음
+    - 의존관계 주입 프레임워크와 쓰는게 좋다
+## 동반 객체: 팩토리 메소드와 정적 멤버
+- 코틀린 static이 없다
+    - 대신 패키지 수준의 최상위 함수와 객체 선언이 있다
+    - 최상위 함수는 private으로 표시된 클래스 비공개 멤버에 접근 불가
+- 클래스 내부 정보에 접근해야할때
+    - 중첩된 객체 선언의 멤버 함수로 정의해야함(예: 팩토리 메서드)
+```kotlin
+    class Companion {
+        companion object{
+            fun bar() {
+                println("Companion object called")
+            }
+        }
+    }
+
+    fun main() {
+        Companion.bar()
+    }
+```
+- 팩토리 메서드 예시
+- 부생성자가 여럿있는 클래스 팩토리 메서드로 바꾸기
+- before
+```kotlin
+class User{
+    val name: String
+    constructor(email: String){
+        name = email.substringBefore('@')
+    }
+    constructor(facebookAccountId: Int){
+        name = kotlinInAction.ch4.getFaceBookId(facebookAccountId)
+    }
+}
+```
+- after
+```kotlin
+fun getFaceBookId(accountId: Int) = "Mark Zuckerberg"
+
+class User private constructor(val nickname: String) {
+    companion object{
+        fun newSubscribingUser(email: String) =
+            User(email.substringBefore('@'))
+        fun newFacebookUser(accountId: Int) =
+            User(getFaceBookId(accountId))
+    }
+}
+
+fun main() {
+    val subscribingUser = User.newSubscribingUser("bob@gmail.com")
+    val facebookUser = User.newFacebookUser(4)
+    println(subscribingUser.nickname)
+}
+```
+## 동반 객체를 일반 객체처럼 사용
 
 
