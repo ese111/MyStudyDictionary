@@ -495,5 +495,19 @@ fun main() {
 }
 ```
 ## 동반 객체를 일반 객체처럼 사용
+- 동반 객체는 클래스 안에 정의된 일반 객체
+- 이름 붙이기 가능
+- 인터페이스 상속 가능
+- 확장 함수와 프로퍼티 정의 가능
+```kotlin
+class Person(val name: String) { companion object Loader { // 동반 객체에 이름을 붙인다. 
+    fun fromJSON(jsonText: String) : Person = ... } 
+} 
+>>> person = Person.Loader.fromJSON("{name: 'Dmitry'}") // 두 방법 모두 제대로 fromJSON을 호출할 수 있다. 
+>>> person.name Dmitry 
+>>> person2 = Person.fromJSON("{name: 'Brent'}") 
+>>> person2.name Brent
+```
+
 
 
