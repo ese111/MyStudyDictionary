@@ -20,4 +20,7 @@ Interface to global information about an application environment. This is an abs
     - 액티비티내에서 유효한 컨택스트
     - 액티비티 라이프사이클과 연결
     - 액티비티와 함께 소멸해야할때
-    
+
+## ContextWrapper
+Context를 사용하기 위한 클래스로 프록시 패턴을 이용해서 구현체를 받아 동작 시키는 클래스이다.
+상속을 받을때도 사용해야해서 Context를 상속 받을 클래스들이 ContextWrapper를 상속 받는다.
