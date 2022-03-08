@@ -36,3 +36,15 @@
     - [함수와 변수](./KotlinInAction/ch2/funAndVariable.md)
     - [함수 호출](./KotlinInAction/ch3/FunctionalCall.md)
     - [클래스, 객체, 인터페이스](./KotlinInAction/ch4/Class.md)
+
+- 안드로이드
+    - Activity
+        - [life cycle](https://github.com/ese111/MyStudyDictionary/blob/main/Android/Activity/Lifecycle.md)
+        - [Intent](https://github.com/ese111/MyStudyDictionary/blob/main/Android/Activity/Intent.md)
+        - [Back Stack](https://github.com/ese111/MyStudyDictionary/blob/main/Android/Activity/BackStack.md)
+    - [Fragment](https://github.com/ese111/MyStudyDictionary/tree/main/Android/Fragment)
+    - [AndroidX](https://github.com/ese111/MyStudyDictionary/blob/main/Android/AndroidX.md)
+    - [App components](https://github.com/ese111/MyStudyDictionary/blob/main/Android/AppComponents.md)
+    - [Context](https://github.com/ese111/MyStudyDictionary/blob/main/Android/Context.md)
+    - [Test code](https://github.com/ese111/MyStudyDictionary/blob/main/Android/Test.md)
+    - [Live data 시현](https://github.com/ese111/MyStudyDictionary/tree/main/MyLiveData)
